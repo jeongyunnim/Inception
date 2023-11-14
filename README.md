@@ -2,7 +2,7 @@
 요약: 이 문서는 시스템 관리자와 관련된 예제입니다.
 ## Introduction
 
-이 프로젝트는 [[Docker]]를 사용한 시스템 관리자의 지식을 확장하는데 초점이 맞춰져 있습니다.
+이 프로젝트는 Docker를 사용한 시스템 관리자의 지식을 확장하는데 초점이 맞춰져 있습니다.
 몇 개의 도커 이미지를 가상화하여 새로운 개인 가상 머신에 그것들을 생성하게 될 것입니다.
 
 ## General guidelines
@@ -15,19 +15,19 @@
 
 ## Mandatory part
 
-이 프로젝트는 특정 규칙에 따라 다양한 서비스로 구성된 소규모 인프라를 설정하는 것으로 구성되어 있습니다. 전체 프로젝트는 가상 머신에서 수행해야 하며 [[docker compose]]를 사용해야 합니다.
+이 프로젝트는 특정 규칙에 따라 다양한 서비스로 구성된 소규모 인프라를 설정하는 것으로 구성되어 있습니다. 전체 프로젝트는 가상 머신에서 수행해야 하며 docker compose를 사용해야 합니다.
 
-각 [[Docker image]]는 해당 서미스와 동일한 이름을 가져야 합니다.
+각 Docker image는 해당 서미스와 동일한 이름을 가져야 합니다.
 각 서비스는 전용 컨테이너에서 실행되어야 합니다.
 성능 문제를 위해 컨테이너는 두 번째 안정적 버전인 Alpine 또는 Debian으로 빌드해야 합니다.
 또한 서비스당 하나씩 자체 `Dockerfile`을 작성해야 합니다. `Dockerfile`은 메이크파일에 의해 `docker-compose.yml`에서 호출 되어야 합니다.
 즉, 프로젝트의 Docker 이미지를  직접 빌드해야 합니다.
-- 이미 만들어진 도커 이미지를 가져오거나 [[DockerHub]]같은 서비스를 사용하는 것도 금지됩니다.
+- 이미 만들어진 도커 이미지를 가져오거나 DockerHub같은 서비스를 사용하는 것도 금지됩니다.
 	- Alpine/Debian은 이 규칙을 따르지 않음.
 
 아래와 같이 설정 해야 합니다:
 - TLSv1.2 또는 TLSv1.3을 사용하는 NGINX를 포함한 도커 컨테이너
-- 워드프레스와 [[php-fpm]](설치 및 구성 해야 함)을 포함한 도커 컨테이너(NGINX가 없어야 함)
+- 워드프레스와 php-fpm(설치 및 구성 해야 함)을 포함한 도커 컨테이너(NGINX가 없어야 함)
 - MariaDB를 포함한 도커 컨테이너(NGINX가 없어야 함)
 - 워드프레스 데이터베이스가 포함된 볼륨
 - 워드프레스 웹 사이트 파일이 들어있는 두 번째 볼륨
@@ -71,7 +71,7 @@ For example, if your login is jeseo, `jeseo.42.fr` will redirect to the IP addre
 > NGINX 컨테이너는 포트 443을 통해서만 접근할 수 있어야 하며, TLSv1.2 또는 TLSv1.3 프로토콜을 사용해야 합니다.
 
 Here is an example diagram of the expected result:
-![[Pasted image 20231025163918.png]]
+!Pasted image 20231025163918.png
 Below is an example of the expected directory structure:
 ```bash
 $> ls -alR 
