@@ -3,4 +3,5 @@
 FROM alpine:3.17
 RUN apk update && apk add nginx
 COPY ./tools/nginx.conf /etc/nginx/nginx.conf
-CMD ["sh"]
+EXPOSE 80 443
+CMD ["nginx"]

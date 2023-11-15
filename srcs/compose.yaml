@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  mariadb:
+    image: mariadb
+    # docker hub registry를 참조하지 않도록 함.
+    pull_policy: never
+    build: ./requirements/mariadb/
+    networks:
+      - wordpressnetwork
+    container_name: wordpressdb
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PW}
+    volumes:
+      # DB가 저장되는 경로
+      - ${MYSQL_DATA_PATH}:/var/lib/mysql
+      # mysql 환경설정을 별도로 오버라이딩 하기 위한 경로
+      - ${MYSQL_CONFIG_PATH}:/etc/mysql/conf.d
+
+networks:
+  wordpressnetwork:
