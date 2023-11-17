@@ -1,22 +1,64 @@
-version: "3"
+# version: "3"
 
+# services:
+#   mariadb:
+#     image: mariadb
+#     # docker hub registry를 참조하지 않도록 함.
+#     pull_policy: never
+#     build: ./requirements/mariadb/
+#     networks:
+#       - wordpressnetwork
+#     container_name: wordpressdb
+#     restart: always
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=${MYSQL_PW}
+#     volumes:
+#       # DB가 저장되는 경로
+#       - ${MYSQL_DATA_PATH}:/var/lib/mysql
+#       # mysql 환경설정을 별도로 오버라이딩 하기 위한 경로
+#       - ${MYSQL_CONFIG_PATH}:/etc/mysql/conf.d
+
+# networks:
+#   wordpressnetwork:
+
+version: '3'
 services:
   mariadb:
+    container_name: mydb
     image: mariadb
-    # docker hub registry를 참조하지 않도록 함.
-    pull_policy: never
-    build: ./requirements/mariadb/
-    networks:
-      - wordpressnetwork
-    container_name: wordpressdb
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PW}
     volumes:
-      # DB가 저장되는 경로
       - ${MYSQL_DATA_PATH}:/var/lib/mysql
-      # mysql 환경설정을 별도로 오버라이딩 하기 위한 경로
       - ${MYSQL_CONFIG_PATH}:/etc/mysql/conf.d
+    networks:
+      - ${MY_NETWORK}
+  wordpress:
+    container_name: mywp
+    image: wordpress:6.4.1-fpm-alpine
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=mydb
+      - WORDPRESS_DB_USER=${WP_DB_USER}
+      - WORDPRESS_DB_PASSWORD=${WP_DB_PASSWORD}
+      - WORDPRESS_DB_NAME=${WP_DB_NAME}
+      - WORDPRESS_TABLE_PREFIX=wp_
+    volumes:
+      - ${WP_WWW_PATH}:/var/www/html
+    networks:
+      - ${MY_NETWORK}
+  nginx:
+    container_name: mynginx
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ${WP_WWW_PATH}:/var/www/html
+    networks:
+      - ${MY_NETWORK}
 
 networks:
-  wordpressnetwork:
+  mynet:
+    name: ${MY_NETWORK}
