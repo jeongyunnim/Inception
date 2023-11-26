@@ -4,6 +4,7 @@ all:
 
 re: fclean
 	make all
+
 fclean:
 	docker system prune -a
 	rm -rf ./requirements/mariadb/tools/volume_db/*

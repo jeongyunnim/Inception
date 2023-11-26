@@ -5,4 +5,4 @@ RUN apk update && apk add mariadb
 
 EXPOSE 3306
 
-CMD ["mariadb"]
+CMD ["sh"]
