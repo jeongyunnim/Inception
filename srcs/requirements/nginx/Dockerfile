@@ -1,10 +1,12 @@
 # syntax=docker/dockerfile:1
 
 FROM alpine:3.17
-RUN apk update &&\
-    apk add nginx &&\
-    apk add openssl &&\
-    adduser -D wordpress
+RUN apk update && \
+    apk add nginx && \
+    apk add openssl && \
+    adduser -D wordpress && \
+    rm /var/cache/apk/*
+
 
 WORKDIR /etc/ssl/private/
 RUN openssl genrsa -out wp.key 2048 &&\
