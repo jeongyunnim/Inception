@@ -16,4 +16,4 @@ COPY ./tools/wp-config.php /var/www/wordpress/wp-config.php
 
 EXPOSE 3306
 
-CMD ["php-fpm"]
+CMD ["/usr/sbin/php-fpm81"]
