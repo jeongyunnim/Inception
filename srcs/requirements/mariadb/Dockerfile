@@ -1,23 +1,27 @@
 # syntax=docker/dockerfile:1
 
 FROM alpine:3.17
-RUN apk update && apk add mysql mysql-client &&\
-    rm /var/cache/apk/*
+
+ENV MYSQL_ROOT_PASSWORD=rootwordpress
+ENV MYSQL_PASSWORD=wordpress
+ENV MYSQL_DATABASE=wp_db
+ENV MYSQL_USER=wordpress_user
+
+RUN apk --no-cache update && apk add mysql mysql-client
 
 RUN sed -i "s|.*bind-address\s*=.*|bind-address=0.0.0.0|g" /etc/my.cnf.d/mariadb-server.cnf &&\
     sed -i "s|.*skip-networking.*|skip-networking|g" /etc/my.cnf.d/mariadb-server.cnf
 
 COPY tools/wordpress_setup.sql /home/
-
 # RUN /etc/init.d/mariadb setup &&\
 #     mysql -u root < /home/wordpress_setup.sql
 
-# ADD tools/run.sh /scripts/run.sh
-# RUN mkdir /docker-entrypoint-initdb.d && \
-#     mkdir /scripts/pre-exec.d && \
-#     mkdir /scripts/pre-init.d && \
-#     chmod -R 755 /scripts
+COPY tools/set.sh /home/
 
+RUN chmod 755 /home/set.sh && /home/set.sh
+
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 EXPOSE 3306
 
 CMD ["sh"]
+# CMD ["mysqld", "-u", "mysql"]

@@ -8,7 +8,7 @@ re: fclean
 
 fclean:
 	docker system prune -a
-	docker rm -f $(DOCKER_ID)
+	$(if $(DOCKER_ID), docker rm -f $(DOCKER_ID))
 	rm -rf ./requirements/mariadb/tools/volume_db/*
 	rm -rf ./requirements/nginx/tools/volume_nginx/*
 	rm -rf ./requirements/wordpress/tools/volume_wp/*

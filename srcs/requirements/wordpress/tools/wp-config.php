@@ -22,10 +22,10 @@
 /** The name of the database for WordPress */
 
 /** 환경변수로 해주는 것이 좋을 것 같다. 여차하면 그냥 쉘 스크립트로 처리하기 */
-define( 'DB_NAME', 'wordpress_db' );
+define( 'DB_NAME', '${WP_DB_NAME}' );
 
 /** Database username */
-define( 'DB_USER', 'wordpress' );
+define( 'DB_USER', '' );
 
 /** Database password */
 define( 'DB_PASSWORD', 'wordpress' );
