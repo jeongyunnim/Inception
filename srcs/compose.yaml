@@ -16,32 +16,45 @@ services:
     volumes:
       - ${MYSQL_DATA_PATH}:/var/lib/mysql
       - ${MYSQL_CONFIG_PATH}:/etc/mysql/conf.d
-    ports:
-      - 3306:3306
+    expose:
+      - "3306"
     networks:
       - ${MY_NETWORK}
 
   wordpress:
     depends_on:
       - mariadb
-      - nginx
     container_name: mywp
     image: wordpress
     pull_policy: never
     build: ./requirements/wordpress/
     restart: always
+    expose:
+      - "9000"
     environment:
-      - WORDPRESS_DB_HOST=mydb
-      - WORDPRESS_DB_USER=${WP_DB_USER}
-      - WORDPRESS_DB_PASSWORD=${WP_DB_PASSWORD}
-      - WORDPRESS_DB_NAME=${WP_DB_NAME}
-      - WORDPRESS_TABLE_PREFIX=wp_
+      - WORDPRESS_DB_HOST=${WP_URL}
+      - WORDPRESS_DB_USER=${MYSQL_USER}
+      - WORDPRESS_DB_PASSWORD=${MYSQL_PW}
+      - WORDPRESS_DB_NAME=${MYSQL_DB}
+      - WORDPRESS_PATH=${WP_PATH}
+      - WP_PATH=/var/www/html
+      - WP_URL=localhost
+      - WP_WWW_PATH=./requirements/wordpress/tools/volume_wp/wordpress
+      - WP_DB_ADMIN=jeseo
+      - WP_DB_ADMIN_EMAIL=jeseo@sample.co.kr
+      - WP_DB_ADMIN_PASSWORD=dbpass
+      - WP_DB_USER=wordpressuser
+      - WP_DB_USER_EMAIL=wordpressuser@sample.com
+      - WP_DB_USER_PASSWORD=user
+      - WP_DB_NAME=wordpress
     volumes:
       - ${WP_WWW_PATH}:/var/www/html
     networks:
       - ${MY_NETWORK}
 
   nginx:
+    depends_on:
+      - mariadb
     container_name: mynginx
     image: nginx
     pull_policy: never
