@@ -15,14 +15,19 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
     chmod +x wp-cli.phar &&\
     mv wp-cli.phar /usr/local/bin/wp
 
-ADD ./tools/set_wp_config_file.sh /var/www/html/set_wp_config_file.sh
-ADD ./tools/install_wp.sh /var/www/html/install_wp.sh
+COPY ./tools/set_wp_config_file.sh /var/www/html/set_wp_config_file.sh
+COPY ./tools/install_wp.sh /var/www/html/install_wp.sh
 
 RUN chmod +x /var/www/html/set_wp_config_file.sh && \
+    chmod 777 /var/www/html/install_wp.sh && \
     /bin/sh /var/www/html/set_wp_config_file.sh
 
-RUN chmod +x /var/www/html/install_wp.sh && \
-    /bin/sh /var/www/html/install_wp.sh
+
+
+EXPOSE 9000
+
+CMD ["sh", "/var/www/html/install_wp.sh"]
+# CMD ["sh"]
 
 # RUN wp core download --locale=ko_KR --allow-root --path=/var/www/html
 # RUN wp core install --allow-root \
@@ -40,8 +45,3 @@ RUN chmod +x /var/www/html/install_wp.sh && \
 #     chmod -R 777 /var/www/html/wp-content
 
 # RUN echo "<?php phpinfo();?>" > /var/www/html/test.php
-
-EXPOSE 9000
-
-CMD ["/usr/sbin/php-fpm81", "-F"]
-# CMD ["sh"]

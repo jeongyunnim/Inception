@@ -9,10 +9,10 @@ services:
     build: ./requirements/mariadb/
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PW}
-      - MYSQL_PASSWORD=${MYSQL_PW}
-      - MYSQL_DATABASE=${MYSQL_DB}
-      - MYSQL_USER=${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PW}
+      MYSQL_PASSWORD: ${MYSQL_PW}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
     volumes:
       - ${MYSQL_DATA_PATH}:/var/lib/mysql
       - ${MYSQL_CONFIG_PATH}:/etc/mysql/conf.d
@@ -31,24 +31,9 @@ services:
     restart: always
     expose:
       - "9000"
-    environment:
-      - WORDPRESS_DB_HOST=${WP_URL}
-      - WORDPRESS_DB_USER=${MYSQL_USER}
-      - WORDPRESS_DB_PASSWORD=${MYSQL_PW}
-      - WORDPRESS_DB_NAME=${MYSQL_DB}
-      - WORDPRESS_PATH=${WP_PATH}
-      - WP_PATH=/var/www/html
-      - WP_URL=localhost
-      - WP_WWW_PATH=./requirements/wordpress/tools/volume_wp/wordpress
-      - WP_DB_ADMIN=jeseo
-      - WP_DB_ADMIN_EMAIL=jeseo@sample.co.kr
-      - WP_DB_ADMIN_PASSWORD=dbpass
-      - WP_DB_USER=wordpressuser
-      - WP_DB_USER_EMAIL=wordpressuser@sample.com
-      - WP_DB_USER_PASSWORD=user
-      - WP_DB_NAME=wordpress
+    env_file: .env
     volumes:
-      - ${WP_WWW_PATH}:/var/www/html
+      - wp-vol:/var/www/html
     networks:
       - ${MY_NETWORK}
 
@@ -64,10 +49,18 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ${WP_WWW_PATH}:/var/www/html
+      - wp-vol:/var/www/html
     networks:
       - ${MY_NETWORK}
 
 networks:
   mynet:
     name: ${MY_NETWORK}
+
+volumes:
+ wp-vol:
+  driver: local
+  driver_opts:
+    o: bind
+    type: none
+    device: ${WP_WWW_PATH}

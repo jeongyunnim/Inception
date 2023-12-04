@@ -18,10 +18,10 @@ COPY tools/wordpress_setup.sql /home/
 
 COPY tools/set.sh /home/
 
-RUN chmod 755 /home/set.sh && /home/set.sh
+RUN chmod 755 /home/set.sh
 
-RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 EXPOSE 3306
 
-CMD ["sh"]
+CMD ["sh", "/home/set.sh"]
 # CMD ["mysqld", "-u", "mysql"]
+# CMD ["sh"]

@@ -15,7 +15,7 @@ if [ -d "/run/mysqld" ]; then
 else
     echo "[i] mysqld not found, creating..."
     mkdir -p /run/mysqld
-    chown -R mysql:mysqld /run/mysqld
+    chown -R mysql:mysql /run/mysqld
 fi
 
 if [ -d /var/lib/mysql/mysql ]; then

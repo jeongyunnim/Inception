@@ -1,5 +1,16 @@
 # !/bin/sh
 
+mysql_install_db --user=mysql --datadir=/var/lib/mysql
+
+if [ -d "/run/mysqld" ]; then
+    echo "[i] mysqld already present, skipping createion"
+    chown -R mysql:mysql /run/mysqld
+else
+    echo "[i] mysqld not found, creating..."
+    mkdir -p /run/mysqld
+    chown -R mysql:mysqld /run/mysqld
+fi
+
 if [ ! -d "/var/lib/mysql/mysql" ]; then
 	echo "[i] MySQL data directory not found, creating initial DBs"
 	chown -R mysql:mysql /var/lib/mysql
@@ -15,14 +26,14 @@ if [ ! -d "/var/lib/mysql/wordpress" ]; then
     cat << EOF > $tfile
 USE mysql;
 FLUSH PRIVILEGES;
-DELETE FROM     mysql.user WHERE User='';
+DELETE FROM mysql.user WHERE User = '';
 DROP DATABASE IF EXISTS test;
-DELETE FROM mysql.db WHERE Db='test';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+DELETE FROM mysql.db WHERE Db = 'test';
+DELETE FROM mysql.user WHERE User = 'root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT}';
-CREATE DATABASE IF NOT EXISTS ${DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${DB_PASS}';
-GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
+CREATE DATABASE IF NOT EXISTS ${DB_NAME};
+CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';
+GRANT ALL PRIVILEGES ON `${DB_NAME}`.* TO '${DB_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
@@ -45,3 +56,5 @@ EOF
     /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile
 	rm -f $tfile
 fi
+
+mysqld -u mysql
