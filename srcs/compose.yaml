@@ -9,13 +9,12 @@ services:
     build: ./requirements/mariadb/
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PW}
-      MYSQL_PASSWORD: ${MYSQL_PW}
       MYSQL_DATABASE: ${MYSQL_DB}
       MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PW}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PW}
     volumes:
       - ${MYSQL_DATA_PATH}:/var/lib/mysql
-      - ${MYSQL_CONFIG_PATH}:/etc/mysql/conf.d
     expose:
       - "3306"
     networks:

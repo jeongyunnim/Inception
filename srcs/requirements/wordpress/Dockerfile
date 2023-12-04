@@ -22,26 +22,6 @@ RUN chmod +x /var/www/html/set_wp_config_file.sh && \
     chmod 777 /var/www/html/install_wp.sh && \
     /bin/sh /var/www/html/set_wp_config_file.sh
 
-
-
 EXPOSE 9000
 
 CMD ["sh", "/var/www/html/install_wp.sh"]
-# CMD ["sh"]
-
-# RUN wp core download --locale=ko_KR --allow-root --path=/var/www/html
-# RUN wp core install --allow-root \
-#     --path=${WP_PATH} \
-#     --url=${WP_URL} \
-#     --title=Inception \
-#     --admin_user=${WP_DB_ADMIN} \
-#     --admin_password=${WP_DB_ADMIN_PASSWORD} \
-#     --admin_email=${WP_DB_ADMIN_EMAIL} \
-#     --skip-email
-# RUN wp user create ${WP_DB_USER} ${WP_DB_USER_EMAIL} \
-#     --user_pass=${WP_DB_USER_PASSWORD} \
-#     --role=author \
-#     --allow-root && \
-#     chmod -R 777 /var/www/html/wp-content
-
-# RUN echo "<?php phpinfo();?>" > /var/www/html/test.php

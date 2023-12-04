@@ -23,7 +23,6 @@ if [ -d /var/lib/mysql/mysql ]; then
 	chown -R mysql:mysql /var/lib/mysql
 else
 	echo "[i] MySQL data directory not found, creating initial DBs"
-
 	chown -R mysql:mysql /var/lib/mysql
 
 	mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null
