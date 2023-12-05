@@ -1,8 +1,7 @@
-#!bin/sh
+# !bin/sh
 
-echo "------env------"
-env
-echo "WP_PATH: $WP_PATH"
+/var/www/html/set_wp_config_file.sh
+
 wp core download \
 --locale=ko_KR \
 --allow-root \
