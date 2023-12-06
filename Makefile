@@ -4,6 +4,9 @@ DOCKER_VOLUME := $(shell docker volume ls -q)
 PWD := $(shell pwd)
 
 all:
+	mkdir -p ./srcs/requirements/mariadb/tools/volume_db/
+	mkdir -p ./srcs/requirements/wordpress/tools/volume_wp/
+
 	sed -i '' 's|^\(WP_WWW_PATH\).*|WP_WWW_PATH=$(PWD)/srcs/requirements/wordpress/tools/volume_wp|' "srcs/.env"
 	sed -i '' 's|^\(MYSQL_DATA_PATH\).*|MYSQL_DATA_PATH=$(PWD)/srcs/requirements/mariadb/tools/volume_db|' "srcs/.env"
 	docker-compose -f ./srcs/compose.yaml build --no-cache 
@@ -17,6 +20,4 @@ fclean:
 	$(if $(DOCKER_VOLUME), docker volume rm $(DOCKER_VOLUME))
 	docker system prune -af
 	rm -rf ./srcs/requirements/mariadb/tools/volume_db/
-	mkdir -p ./srcs/requirements/mariadb/tools/volume_db/
 	rm -rf ./srcs/requirements/wordpress/tools/volume_wp/
-	mkdir -p ./srcs/requirements/wordpress/tools/volume_wp/

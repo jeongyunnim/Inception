@@ -20,7 +20,8 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 COPY ./tools/set_wp_config_file.sh /var/www/html/set_wp_config_file.sh
 COPY ./tools/install_wp.sh /var/www/html/install_wp.sh
 
-RUN chmod 755 /var/www/html && \
+RUN mkdir -p /var/lib/nginx/tmp/client_body && \
+    chmod 777 /var/lib/nginx/tmp/client_body && \
     chmod 777 /var/www/html/set_wp_config_file.sh && \
     chmod 777 /var/www/html/install_wp.sh
 

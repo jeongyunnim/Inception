@@ -18,7 +18,7 @@ services:
     expose:
       - "3306"
     networks:
-      - ${MY_NETWORK}
+      - jeseo-net
 
   wordpress:
     depends_on:
@@ -34,10 +34,12 @@ services:
     volumes:
       - wp-vol:/var/www/html
     networks:
-      - ${MY_NETWORK}
+      - jeseo-net
 
   nginx:
     container_name: nginx
+    depends_on:
+      - wordpress
     image: nginx
     pull_policy: never
     build: ./requirements/nginx/
@@ -48,11 +50,11 @@ services:
     volumes:
       - wp-vol:/var/www/html
     networks:
-      - ${MY_NETWORK}
+      - jeseo-net
 
 networks:
-  mynet:
-    name: ${MY_NETWORK}
+  jeseo-net:
+    driver: bridge
 
 volumes:
   wp-vol:
