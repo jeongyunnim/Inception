@@ -1,5 +1,9 @@
 # !bin/sh
 
+
+
+if [ ! -f "/var/www/html/wp-config.php" ]; then
+
 /var/www/html/set_wp_config_file.sh
 
 wp core download \
@@ -11,7 +15,7 @@ wp core install \
 --allow-root \
 --path=${WP_PATH} \
 --url=${WP_URL} \
---title=Inception \
+--title=Jeseo\'s_Inception \
 --admin_user=${WP_ADMIN} \
 --admin_password=${WP_ADMIN_PASSWORD} \
 --admin_email=${WP_ADMIN_EMAIL} \
@@ -23,5 +27,6 @@ wp user create ${WP_USER} ${WP_USER_EMAIL} \
 --allow-root && \
 
 chmod -R 777 /var/www/html/wp-content
+fi
 
 /usr/sbin/php-fpm81 -F

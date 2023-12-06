@@ -1,6 +1,5 @@
 # !bin/sh
 
-if [ ! -f "/var/www/html/wp-config.php" ]; then
 cat << EOF > /var/www/html/wp-config.php
 <?php
 define( 'DB_NAME', '${MYSQL_DB}' );
@@ -15,4 +14,3 @@ define( 'WP_DEBUG', false );
 require_once ABSPATH . 'wp-settings.php';
 ?>
 EOF
-fi
