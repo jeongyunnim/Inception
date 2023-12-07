@@ -1,7 +1,5 @@
 # !/bin/sh
 
-mysql_install_db --user=mysql --datadir=/var/lib/mysql
-
 if [ -d "/run/mysqld" ]; then
     echo "[i] mysqld already present, skipping createion"
     chown -R mysql:mysql /run/mysqld
