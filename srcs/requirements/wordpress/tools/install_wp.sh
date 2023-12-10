@@ -1,7 +1,5 @@
 # !bin/sh
 
-
-
 if [ ! -f "/var/www/html/wp-config.php" ]; then
 
 /var/www/html/set_wp_config_file.sh
