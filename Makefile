@@ -36,3 +36,5 @@ fclean:
 	docker system prune -af
 	rm -rf ${DB_VOL}
 	rm -rf ${WP_VOL}
+	rm -rf ./srcs/requirements/mariadb/tools/db_vol
+	rm -rf ./srcs/requirements/wordpress/tools/wp_vol 

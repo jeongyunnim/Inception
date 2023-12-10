@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    pull_policy: never
+    build: ./requirements/mariadb/
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PW}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PW}
+    volumes:
+      - db-vol:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - jeseo-net
+
+  wordpress:
+    depends_on:
+      - mariadb
+    container_name: wordpress
+    image: wordpress
+    pull_policy: never
+    build: ./requirements/wordpress/
+    restart: always
+    expose:
+      - "9000"
+    env_file: .env
+    volumes:
+      - wp-vol:/var/www/html
+    networks:
+      - jeseo-net
+
+  nginx:
+    container_name: nginx
+    depends_on:
+      - wordpress
+    image: nginx
+    pull_policy: never
+    build: ./requirements/nginx/
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - wp-vol:/var/www/html
+    networks:
+      - jeseo-net
+
+networks:
+  jeseo-net:
+    driver: bridge
+
+volumes:
+  wp-vol:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /Users/jeseo/Inception/srcs/requirements/wordpress/tools/wp_vol
+  db-vol:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /Users/jeseo/Inception/srcs/requirements/mariadb/tools/db_vol
