@@ -6,7 +6,8 @@ ARG SSL_PATH=/etc/ssl/private
 
 RUN apk update && \
     apk --no-cache add nginx \
-    openssl && \
+    openssl \
+    dumb-init && \
     adduser -D jeseo
 
 RUN openssl genrsa -out ${SSL_PATH}/jeseo.42.fr.key 2048 && \
@@ -21,5 +22,4 @@ COPY ./tools/nginx.conf /etc/nginx/nginx.conf
 COPY ./tools/default.conf /etc/nginx/http.d/default.conf
 
 EXPOSE 80 443
-CMD ["nginx", "-g", "daemon off;"]
-# CMD ["sh"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "nginx", "-g", "daemon off;"]

@@ -2,7 +2,10 @@
 
 FROM alpine:3.18
 
-RUN apk update && apk add --no-cache mysql mysql-client
+RUN apk update && \
+    apk add --no-cache mysql \
+    mysql-client \
+    dumb-init
 
 RUN mkdir /var/run/mysqld && \
     chmod 755 /var/run/mysqld && \
@@ -13,4 +16,4 @@ COPY tools/set.sh /home/
 
 RUN chmod 755 /home/set.sh
 
-ENTRYPOINT ["/bin/sh", "/home/set.sh"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "/bin/sh", "/home/set.sh"]

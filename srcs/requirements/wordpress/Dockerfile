@@ -8,12 +8,10 @@ RUN apk update &&\
     php-phar \
     php-curl \
     php-mysqli \
-    php-mbstring
+    php-mbstring \
+    dumb-init
 
-RUN sed -i "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php81/php-fpm.d/www.conf && \
-    sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php81/php-fpm.d/www.conf && \
-    sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php81/php-fpm.d/www.conf && \
-    sed -i "s|;clear_env = no|clear_env = no|g" /etc/php81/php-fpm.d/www.conf
+RUN sed -i "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php81/php-fpm.d/www.conf
 
 WORKDIR /var/www/html
 
@@ -30,4 +28,4 @@ RUN chmod 777 /var/www/html/set_wp_config_file.sh && \
 
 EXPOSE 9000
 
-CMD ["/bin/sh", "/var/www/html/install_wp.sh"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "/bin/sh", "/var/www/html/install_wp.sh"]
