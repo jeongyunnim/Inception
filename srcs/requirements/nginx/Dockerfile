@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.17
+FROM alpine:3.18
 
 ARG SSL_PATH=/etc/ssl/private
 

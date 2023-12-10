@@ -1,9 +1,14 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.17
+FROM alpine:3.18
 
 RUN apk update &&\
-    apk --no-cache add php php-fpm php-phar php-curl php-mysqli php-mbstring
+    apk --no-cache add php \
+    php-fpm \
+    php-phar \
+    php-curl \
+    php-mysqli \
+    php-mbstring
 
 RUN sed -i "s|listen = 127.0.0.1:9000|listen = 0.0.0.0:9000|g" /etc/php81/php-fpm.d/www.conf && \
     sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php81/php-fpm.d/www.conf && \
